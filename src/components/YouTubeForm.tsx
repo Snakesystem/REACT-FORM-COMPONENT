@@ -48,21 +48,27 @@ export const YouTubeForm = () => {
       phoneNumbers: ["", ""],
       phNumbers: [{number: ''}],
       age: 0,
-      dob: new Date()
-    }
+      dob: new Date(),
+    },
+    mode: "all" // default onSubmit
+    // masukan event handler javascript atau "all"
   });
 
-  const { register, control, handleSubmit, formState: { errors, touchedFields, dirtyFields, isDirty, isValid }, watch, getValues, setValue } = form;
+  const { register, control, handleSubmit, formState, watch, getValues, setValue, reset, trigger } = form;
+
+  const { errors, touchedFields, dirtyFields, isDirty, isValid, isSubmitting, isSubmitted, isSubmitSuccessful, submitCount } = formState;
 
   // console.log("touchedFields", touchedFields)
   // console.log("dirtyFields", dirtyFields)
   // console.log("isDirty", isDirty)
   // console.log("isValid", isValid)
+  // console.log({isSubmitting, isSubmitted, isSubmitSuccessful, submitCount})
 
   const { fields, append, remove } =  useFieldArray({
     name: 'phNumbers',
     control
   })
+
   const onSubmit = (data: FormValue) => {
     console.log(data)
   }
@@ -83,6 +89,12 @@ export const YouTubeForm = () => {
       shouldTouch: true
     })
   }
+
+  useEffect(() => {
+    if(isSubmitSuccessful) {
+      reset()
+    }
+  }, [isSubmitSuccessful, reset])
 
   useEffect(() => {
     const subcribtions = watch((value) => {
@@ -122,6 +134,11 @@ export const YouTubeForm = () => {
                 },
                 notBlackListed: (fieldValue) => {
                   return !fieldValue.endsWith("baddomain.com") || "This domain is not supported"
+                },
+                emailAvailable: async (fieldValue) => {
+                  const response = await fetch(`https://jsonplaceholder.typicode.com/users?email=${fieldValue}`);
+                  const data = await response.json();
+                  return data.length == 0 || "Email already exist"
                 }
               }
             })} />
@@ -208,7 +225,11 @@ export const YouTubeForm = () => {
 
           </div>
 
-          <button disabled={!isDirty || !isValid}>Submit</button>
+          {/* <button disabled={!isDirty || !isValid || isSubmitting}>Submit</button> */}
+          <button disabled={!isDirty || isSubmitting}>Submit</button>
+          <button type="button" onClick={() => reset()}>Reset</button>
+          {/* <button type="button" onClick={() => trigger("chanel")}>Validate</button> */}
+          <button type="button" onClick={() => trigger()}>Validate</button>
           <button type="button" onClick={handleGetValues}>Get Values</button>
           <button type="button" onClick={handleSetValues}>Set Values</button>
         </form>
