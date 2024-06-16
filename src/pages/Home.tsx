@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <div>
-        <h2>Welcome to React Hook Form Documentation from Snakesystem</h2>
+        <h2>Welcome to My React Hook Form Documentation</h2>
     </div>
   )
 }
