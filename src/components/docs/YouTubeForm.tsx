@@ -58,11 +58,11 @@ export const YouTubeForm = () => {
 
   const { errors, touchedFields, dirtyFields, isDirty, isValid, isSubmitting, isSubmitted, isSubmitSuccessful, submitCount } = formState;
 
-  // console.log("touchedFields", touchedFields)
-  // console.log("dirtyFields", dirtyFields)
-  // console.log("isDirty", isDirty)
-  // console.log("isValid", isValid)
-  // console.log({isSubmitting, isSubmitted, isSubmitSuccessful, submitCount})
+  console.log("touchedFields", touchedFields)
+  console.log("dirtyFields", dirtyFields)
+  console.log("isDirty", isDirty)
+  console.log("isValid", isValid)
+  console.log({isSubmitting, isSubmitted, isSubmitSuccessful, submitCount})
 
   const { fields, append, remove } =  useFieldArray({
     name: 'phNumbers',
@@ -98,7 +98,7 @@ export const YouTubeForm = () => {
 
   useEffect(() => {
     const subcribtions = watch((value) => {
-      // console.log(value)
+      console.log(value)
     });
 
     return () => subcribtions.unsubscribe()
